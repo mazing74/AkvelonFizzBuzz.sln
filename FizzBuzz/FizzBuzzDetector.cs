@@ -2,7 +2,7 @@
 
 namespace FizzBuzz
 {
-    enum WordType
+   public enum WordType
     {
         Normal,
         Fizz,
@@ -18,10 +18,9 @@ namespace FizzBuzz
 
             var words = Tokenize(input);
 
-            string output = ReplaceWords(input, words);
+            var result = ReplaceWords(input, words);
 
-            return BuildResult(output);
-
+            return result;
         }
 
 
@@ -100,42 +99,27 @@ namespace FizzBuzz
 
             return WordType.Normal;
         }
-        private string ReplaceWords(string input, List<WordToken> words)
+        private FizzBuzzResult ReplaceWords(string input, List<WordToken> words)
         {
             StringBuilder result = new(input);
+            int count = 0;
 
             for (int i = words.Count - 1; i >= 0; i--)
             {
                 var word = words[i];
 
-                WordType? replacement = DetermineWordType(word.Index);
+                WordType replacement = DetermineWordType(word.Index);
 
                 if (replacement == WordType.Normal)
                     continue;
 
                 result.Remove(word.Start, word.Length);
                 result.Insert(word.Start, replacement.ToString());
+                count++;
             }
+            return new FizzBuzzResult(result.ToString(), count);
 
-            return result.ToString();
         }
-        private FizzBuzzResult BuildResult(string output)
-        {
-            int count = 0;
-            var words = Tokenize(output);
 
-            foreach (var word in words)
-            {
-                if (word.Word == "Fizz" ||
-                    word.Word == "Buzz" ||
-                    word.Word == "FizzBuzz")
-                {
-                    count++;
-                }
-            }
-
-            return new FizzBuzzResult(output, count);
-          
-        }
     }
 }
