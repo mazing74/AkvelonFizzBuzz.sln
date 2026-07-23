@@ -4,7 +4,7 @@ namespace FizzBuzz
 {
     enum WordType
     {
-        normal,
+        Normal,
         Fizz,
         Buzz,
         FizzBuzz,
@@ -14,6 +14,14 @@ namespace FizzBuzz
     {
         public FizzBuzzResult getOverlappings(string input)
         {
+            ValidateInput(input);
+
+            var words = Tokenize(input);
+
+            string output = ReplaceWords(input, words);
+
+            return BuildResult(output);
+
         }
 
 
@@ -76,11 +84,58 @@ namespace FizzBuzz
 
             return words;
         }
-        private WordType DetermineWordType(int index)
+        private WordType DetermineWordType(int wordNumber)
         {
+            bool fizz = wordNumber % 3 == 0;
+            bool buzz = wordNumber % 5 == 0;
+
+            if (fizz && buzz)
+                return WordType.FizzBuzz;
+
+            if (fizz)
+                return WordType.Fizz;
+
+            if (buzz)
+                return WordType.Buzz;
+
+            return WordType.Normal;
         }
-        private FizzBuzzResult BuildResult()
+        private string ReplaceWords(string input, List<WordToken> words)
         {
+            StringBuilder result = new(input);
+
+            for (int i = words.Count - 1; i >= 0; i--)
+            {
+                var word = words[i];
+
+                WordType? replacement = DetermineWordType(word.Index);
+
+                if (replacement == WordType.Normal)
+                    continue;
+
+                result.Remove(word.Start, word.Length);
+                result.Insert(word.Start, replacement.ToString());
+            }
+
+            return result.ToString();
+        }
+        private FizzBuzzResult BuildResult(string output)
+        {
+            int count = 0;
+            var words = Tokenize(output);
+
+            foreach (var word in words)
+            {
+                if (word.Word == "Fizz" ||
+                    word.Word == "Buzz" ||
+                    word.Word == "FizzBuzz")
+                {
+                    count++;
+                }
+            }
+
+            return new FizzBuzzResult(output, count);
+          
         }
     }
 }

@@ -8,12 +8,19 @@ namespace FizzBuzz
 {
     public class WordToken
     {
-        public string Word { get; }
+        public string Word { get;  }
 
         public int Index { get; }
 
-        public int Start { get; }
+        public int Start { get;  }
 
-        public int Length { get; }
+        public int Length { get;  }
+        public WordToken( string word, int index, int start, int length)
+        {
+            Word = word;
+            Index = index;
+            Start = start;
+            Length = length;
+        }
     }
 }
