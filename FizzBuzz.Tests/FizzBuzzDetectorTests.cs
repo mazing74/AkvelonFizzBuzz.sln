@@ -40,7 +40,18 @@
             Assert.Throws<ArgumentException>(
                 () => _detector.getOverlappings("Hello"));
         }
+        [Fact]
+        public void GetOverlappings_Should_Treat_Apostrophe_AsPartOfWord()
+        {
+            string input = "One two It's four five";
 
+            var result = _detector.getOverlappings(input);
+
+            Assert.Equal("One two Fizz four Buzz", result.Output); 
+            Assert.Equal(2, result.Count);
+
+
+        }
 
     }
 }
