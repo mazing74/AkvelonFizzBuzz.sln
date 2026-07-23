@@ -27,5 +27,14 @@
             Assert.Equal(expected, result.Output);
             Assert.Equal(9, result.Count);
         }
+        [Fact]
+        public void GetOverlappings_Should_Throw_WhenInputIsNull()
+        {
+            Assert.Throws<ArgumentException>(
+                () => _detector.getOverlappings(null));
+        }
+
+
+
     }
 }
